@@ -65,9 +65,9 @@ ClassicEditor.defaultConfig = {
 			'bold',
 			'italic',
 			'link',
-			'alignment',
 			'bulletedList',
 			'numberedList',
+			'alignment',
 			'|',
 			'indent',
 			'outdent',
@@ -79,6 +79,10 @@ ClassicEditor.defaultConfig = {
 			'undo',
 			'redo'
 		]
+	},
+	indentBlock: {
+		offset: 1,
+		unit: 'em'
 	},
 	image: {
 		toolbar: [

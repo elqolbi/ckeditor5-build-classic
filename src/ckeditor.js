@@ -61,6 +61,7 @@ ClassicEditor.builtinPlugins = [
 // Editor configuration.
 ClassicEditor.defaultConfig = {
 	toolbar: {
+		isSticky: true,
 		items: [
 			'heading',
 			'|',
@@ -75,6 +76,7 @@ ClassicEditor.defaultConfig = {
 			'outdent',
 			'|',
 			'imageUpload',
+			'horizontalLine',
 			'blockQuote',
 			'insertTable',
 			'mediaEmbed',

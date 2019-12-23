@@ -75,8 +75,6 @@ ClassicEditor.defaultConfig = {
 			'indent',
 			'outdent',
 			'|',
-			'imageUpload',
-			'horizontalLine',
 			'blockQuote',
 			'insertTable',
 			'mediaEmbed',

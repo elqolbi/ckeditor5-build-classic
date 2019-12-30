@@ -35,6 +35,38 @@ import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 
 export default class ClassicEditor extends ClassicEditorBase {}
 
+class InsertImage extends Plugin {
+	init() {
+		const editor = this.editor;
+
+		editor.ui.componentFactory.add( 'insertImage', locale => {
+			const view = new ButtonView( locale );
+
+			view.set( {
+				label: 'Insert image',
+				icon: ImageIcon,
+				tooltip: true
+			} );
+
+			// Callback executed once the image is clicked.
+			view.on( 'execute', () => {
+				const imageUrl = 'www.google.com';
+
+				editor.model.change( writer => {
+					const imageElement = writer.createElement( 'image', {
+						src: imageUrl
+					} );
+
+					// Insert the image in the current selection location.
+					editor.model.insertContent( imageElement, editor.model.document.selection );
+				} );
+			} );
+
+			return view;
+		} );
+	}
+}
+
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
 	Essentials,
@@ -59,39 +91,8 @@ ClassicEditor.builtinPlugins = [
 	TableToolbar,
 	Alignment,
 	HorizontalLine,
+	InsertImage,
 ];
-
-class InsertImage extends Plugin {
-	init() {
-		const editor = this.editor;
-
-		editor.ui.componentFactory.add( 'insertImage', locale => {
-			const view = new ButtonView( locale );
-
-			view.set( {
-				label: 'Insert image',
-				icon: ImageIcon,
-				tooltip: true
-			} );
-
-			// Callback executed once the image is clicked.
-			view.on( 'execute', () => {
-				const imageURL = prompt('Image URL');
-
-				editor.model.change( writer => {
-					const imageElement = writer.createElement( 'image', {
-						src: imageURL
-					} );
-
-					// Insert the image in the current selection location.
-					editor.model.insertContent( imageElement, editor.model.document.selection );
-				} );
-			} );
-
-			return view;
-		} );
-	}
-}
 
 // Editor configuration.
 ClassicEditor.defaultConfig = {

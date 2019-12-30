@@ -7,7 +7,7 @@
 import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
+import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
@@ -30,13 +30,14 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
+import ImageIcon from '@ckeditor/ckeditor5-core/theme/icons/image.svg';
+import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 
 export default class ClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
 	Essentials,
-	UploadAdapter,
 	Autoformat,
 	Bold,
 	Italic,
@@ -60,6 +61,38 @@ ClassicEditor.builtinPlugins = [
 	HorizontalLine,
 ];
 
+class InsertImage extends Plugin {
+	init() {
+		const editor = this.editor;
+
+		editor.ui.componentFactory.add( 'insertImage', locale => {
+			const view = new ButtonView( locale );
+
+			view.set( {
+				label: 'Insert image',
+				icon: ImageIcon,
+				tooltip: true
+			} );
+
+			// Callback executed once the image is clicked.
+			view.on( 'execute', () => {
+				const imageURL = prompt('Image URL');
+
+				editor.model.change( writer => {
+					const imageElement = writer.createElement( 'image', {
+						src: imageURL
+					} );
+
+					// Insert the image in the current selection location.
+					editor.model.insertContent( imageElement, editor.model.document.selection );
+				} );
+			} );
+
+			return view;
+		} );
+	}
+}
+
 // Editor configuration.
 ClassicEditor.defaultConfig = {
 	toolbar: {
@@ -80,6 +113,7 @@ ClassicEditor.defaultConfig = {
 			'outdent',
 			'|',
 			'imageUpload',
+			'insertImage',
 			'horizontalLine',
 			'blockQuote',
 			'insertTable',

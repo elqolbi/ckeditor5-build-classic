@@ -50,7 +50,8 @@ class InsertImage extends Plugin {
 
 			// Callback executed once the image is clicked.
 			view.on( 'execute', () => {
-				const imageUrl = 'www.google.com';
+				// eslint-disable-next-line
+				const imageUrl = vue.selectImageManager();
 
 				editor.model.change( writer => {
 					const imageElement = writer.createElement( 'image', {

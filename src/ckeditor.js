@@ -35,9 +35,11 @@ import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 
 export default class ClassicEditor extends ClassicEditorBase {}
 
+let editor;
+
 class InsertImage extends Plugin {
 	init() {
-		const editor = this.editor;
+		editor = this.editor;
 
 		editor.ui.componentFactory.add( 'insertImage', locale => {
 			const view = new ButtonView( locale );
@@ -51,22 +53,25 @@ class InsertImage extends Plugin {
 			// Callback executed once the image is clicked.
 			view.on( 'execute', () => {
 				// eslint-disable-next-line
-				const imageUrl = vue.openImageManager();
-
-				editor.model.change( writer => {
-					const imageElement = writer.createElement( 'image', {
-						src: imageUrl
-					} );
-
-					// Insert the image in the current selection location.
-					editor.model.insertContent( imageElement, editor.model.document.selection );
-				} );
+				vue.openImageManager();
 			} );
 
 			return view;
 		} );
 	}
 }
+
+// eslint-disable-next-line
+window.selectedImage = imageUrl => {
+	editor.model.change( writer => {
+		const imageElement = writer.createElement( 'image', {
+			src: imageUrl
+		} );
+
+		// Insert the image in the current selection location.
+		editor.model.insertContent( imageElement, editor.model.document.selection );
+	} );
+};
 
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
